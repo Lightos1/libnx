@@ -62,15 +62,15 @@ Result clkrstGetPossibleClockRates(ClkrstSession *session, u32 *rates, s32 max_c
     return rc;
 }
 
-Result clkrstGetDvfsTable(ClkrstSession *session, u32 *freq_table, s32 freq_count, u32 *voltage_table, s32 voltage_count, s32 *out_count) {
+Result clkrstGetDvfsTable(ClkrstSession *session, u32 *out_rate_table, s32 in_rate_count, u32 *out_voltage_table, s32 in_voltage_count, s32 *out_count) {
     if (hosversionBefore(3,0,0)) {
         return MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer);
     }
 
     const struct {
-        s32 freq_count;
+        s32 rate_count;
         s32 voltage_count;
-    } in = { freq_count, voltage_count };
+    } in = { in_rate_count, in_voltage_count };
 
     s32 out = 0;
     Result rc = serviceDispatchInOut(&session->s, 11, in, out,
@@ -79,8 +79,8 @@ Result clkrstGetDvfsTable(ClkrstSession *session, u32 *freq_table, s32 freq_coun
             SfBufferAttr_Out | (hosversionAtLeast(7,0,0) ? SfBufferAttr_HipcAutoSelect : SfBufferAttr_HipcPointer),
         },
         .buffers = {
-            { freq_table,    freq_count    * sizeof(u32) },
-            { voltage_table, voltage_count * sizeof(u32) },
+            { out_rate_table,    in_rate_count    * sizeof(u32) },
+            { out_voltage_table, in_voltage_count * sizeof(u32) },
         },
     );
 
