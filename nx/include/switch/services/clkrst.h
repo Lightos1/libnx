@@ -28,5 +28,5 @@ void clkrstCloseSession(ClkrstSession* session);
 Result clkrstSetClockRate(ClkrstSession* session, u32 hz);
 Result clkrstGetClockRate(ClkrstSession* session, u32 *out_hz);
 Result clkrstGetPossibleClockRates(ClkrstSession *session, u32 *rates, s32 max_count, PcvClockRatesListType *out_type, s32 *out_count);
+Result clkrstSetMinimumVoltageClockRate(ClkrstSession *session, u32 hz);
 Result clkrstGetDvfsTable(ClkrstSession *session, u32 *out_rate_table, s32 in_rate_count, u32 *out_voltage_table, s32 in_voltage_count, s32 *out_count);
-Result clkrstSetMinVClockRate(ClkrstSession *session, u32 hz);
