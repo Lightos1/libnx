@@ -67,10 +67,6 @@ Result clkrstGetPossibleClockRates(ClkrstSession *session, u32 *rates, s32 max_c
 }
 
 Result clkrstGetDvfsTable(ClkrstSession *session, u32 *out_rate_table, s32 in_rate_count, u32 *out_voltage_table, s32 in_voltage_count, s32 *out_count) {
-    if (hosversionBefore(3,0,0)) {
-        return MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer);
-    }
-
     const struct {
         s32 rate_count;
         s32 voltage_count;
@@ -79,8 +75,8 @@ Result clkrstGetDvfsTable(ClkrstSession *session, u32 *out_rate_table, s32 in_ra
     s32 out = 0;
     Result rc = serviceDispatchInOut(&session->s, 11, in, out,
         .buffer_attrs = {
-            SfBufferAttr_Out | (hosversionAtLeast(7,0,0) ? SfBufferAttr_HipcAutoSelect : SfBufferAttr_HipcPointer),
-            SfBufferAttr_Out | (hosversionAtLeast(7,0,0) ? SfBufferAttr_HipcAutoSelect : SfBufferAttr_HipcPointer),
+            SfBufferAttr_Out | SfBufferAttr_HipcAutoSelect,
+            SfBufferAttr_Out | SfBufferAttr_HipcAutoSelect,
         },
         .buffers = {
             { out_rate_table,    in_rate_count    * sizeof(u32) },
